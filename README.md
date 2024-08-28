@@ -1,0 +1,2 @@
+# coinhelp
+Decentralized donation platform
