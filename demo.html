@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Connect Web3 Wallet with JavaScript</title>
+    <style>
+      #transferModal {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div><h3>Details</h3></div>
+      <div>
+        <div>
+          <label>Account Address: <span id="accountSpan"></span></label>
+        </div>
+        <div>
+          <label>Chain ID: <span id="ChainIdSpan"></span></label>
+        </div>
+        <div>
+          <label>Network ID: <span id="NetworkSpan"></span></label>
+        </div>
+        <div>
+          <label>Balance: <span id="BalanceSpan"></span></label>
+        </div>
+      </div>
+      <div>
+        <button id="sendButton">Send</button>
+      </div>
+    </div>
+
+    <div id="transferModal">
+      <label>Recipient Address<input type="text" id="recipientAddress"></label>
+      <br>
+      <label>ETH Amount<input type="number" id="ethAmount" required min="0" step="0.0001"></label>
+      <br>
+      <button id="confirmTransferButton" type="submit">Confirm</button>
+      <button id="cancelTransferButton">Cancel</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+    <script>
+      // Check if MetaMask is installed
+      const initialize = async () => {
+        if (!isMetaMaskInstalled()) {
+          alert("Please install MetaMask first");
+        } else {
+          await getNetwork(); // Get network
+          await getChainId(); // Get chain ID
+          await getAccount(); // Get account address
+          await getBalance(); // Get balance
+        }
+      }
+
+      // Check if MetaMask is installed
+      const isMetaMaskInstalled = () => {
+        const { ethereum } = window;
+        return Boolean(ethereum && ethereum.isMetaMask);
+      }
+
+      const getNetwork = async () => {
+        try {
+          const networkId = await ethereum.request({ method: 'net_version' });
+          document.getElementById('NetworkSpan').innerHTML = networkId;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      const getChainId = async () => {
+        try {
+          const chainId = await ethereum.request({ method: 'eth_chainId' });
+          document.getElementById('ChainIdSpan').innerHTML = chainId;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      const getAccount = async () => {
+        try {
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+          document.getElementById('accountSpan').innerHTML = accounts[0]; // Display the first account
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      const getBalance = async () => {
+        try {
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+          const balance = await ethereum.request({
+            method: 'eth_getBalance',
+            params: [accounts[0], 'latest']
+          });
+          const ethBalance = Web3.utils.fromWei(balance, 'ether');
+          document.getElementById('BalanceSpan').innerHTML = `${ethBalance} ETH`;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      // Get the current gas price
+      const getGasPrice = async () => {
+        const web3 = new Web3(Web3.givenProvider);
+        const gasPrice = await web3.eth.getGasPrice();
+        console.log('Current gas prices => ' + gasPrice);
+        return gasPrice;
+      }
+
+      // Show and hide the transfer modal
+      const sendButton = document.getElementById('sendButton');
+      const transferModal = document.getElementById('transferModal');
+      const confirmTransferButton = document.getElementById('confirmTransferButton');
+      const cancelTransferButton = document.getElementById('cancelTransferButton');
+
+      sendButton.addEventListener('click', () => {
+        transferModal.style.display = 'block';
+      });
+
+      cancelTransferButton.addEventListener('click', () => {
+        transferModal.style.display = 'none';
+      });
+
+      // Handle transfer logic
+      confirmTransferButton.addEventListener('click', async () => {
+        const recipientAddress = document.getElementById('recipientAddress').value;
+        const ethAmount = document.getElementById('ethAmount').value;
+
+        if (!recipientAddress || !ethAmount) {
+          alert('Please fill in all fields');
+          return;
+        }
+
+        try {
+          const web3 = new Web3(Web3.givenProvider);
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+          const senderAddress = accounts[0];
+
+          const transactionParameters = {
+            to: recipientAddress,
+            from: senderAddress,
+            value: web3.utils.toHex(web3.utils.toWei(ethAmount, 'ether')),
+            gasPrice: await getGasPrice(),
+            gas: '21000',
+          };
+
+          await ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [transactionParameters],
+          });
+
+          alert('Transfer successful');
+          transferModal.style.display = 'none';
+          await getBalance(); // Update balance
+        } catch (error) {
+          console.error(error);
+          alert('Transfer failed');
+        }
+      });
+
+      // Triggered when account changes
+      ethereum.on('accountsChanged', function () {
+        console.log('Account changed');
+        window.location.reload();
+      });
+
+      // Triggered when network changes
+      ethereum.on('chainChanged', function () {
+        console.log('Network changed');
+        window.location.reload();
+      });
+
+      window.addEventListener('DOMContentLoaded', initialize);
+    </script>
+  </body>
+</html>
+
