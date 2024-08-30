@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态波浪页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; 
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        input:focus {
+            border: none;
+            outline: none;
+        }
+        
+        input::placeholder {
+            color: black;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 150px;
+            padding: 0 20px;
+            border-bottom: 1px solid #000;
+            background-color: white;
+        }
+
+        .navbar .logo-section {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            flex-basis: 20%;
+        }
+
+        .navbar .logo-section img {
+            height: 40px;
+            margin-top: -50px;
+            margin-right: 8px;
+        }
+
+        .navbar .logo-section span {
+            font-size: 2vw;
+            white-space: nowrap;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            justify-content: space-around;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .navbar .nav-links a {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3vw;
+            text-decoration: none;
+            color: black;
+            border-left: 1px solid #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .funds-raised {
+            position: relative;
+            top: 100px;
+            font-size: 72px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+        }
+
+        .main {
+            width: 100%;
+            background: white;
+            position:relative;
+        }
+        
+        .flex-container {
+            display: flex;
+            flex: 1;
+            width: 717px;
+            height: 111px;
+            border: 4px solid black;
+            position: relative;
+            margin-top: 181px;
+            margin-left: 362px;
+        } 
+
+        .sender {
+            font-family: Arial, sans-serif;
+            font-size: 48px;
+            position: fixed;
+            margin-top: 205px;
+            margin-left: 133px;
+        }
+
+        .fill-address {
+            width:100%;
+            flex-grow: 1;
+            border: none;
+            padding: 10px;
+            font-size: 45px;
+            background-color: #d9d9d9;
+        }
+
+        .currency-container {
+            position: relative;
+            width: 200px;
+            border-left: 3px solid black;
+        }
+
+        .currency { 
+            width: 100%;
+            height:100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #d9d9d9;
+            font-family: Arial, sans-serif; 
+            font-size: 36px;
+            cursor: pointer;
+            padding: 10px 0; 
+            box-sizing: border-box; 
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #d9d9d9;
+            border: 3px solid black;
+            width: 100%;
+            max-height: 200px;  
+            overflow-y: auto;  
+            overflow-x: hidden; 
+            top: 100%;
+            left: 0;
+            z-index: 1;
+            box-sizing: border-box;
+            padding: 0;
+        }
+        
+        .dropdown-content div {
+            padding: 10px;
+            font-size: 36px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 1px solid #000;
+            background-color: #d9d9d9;
+            white-space: nowrap; 
+        }
+        
+        .dropdown-content div:hover {
+            background-color: #f1f1f1;
+        }
+        
+
+        .blank {
+            display: flex;
+            width: 168px;
+            height: 49px;
+            background: #ffff;
+            color: black;
+            box-sizing: border-box;
+            border: 4px solid #4e4a4a;
+            font-family: Arial, sans-serif;
+            font-size: 36px;
+            position: relative;
+            top: -75px;
+            left: 1121px;
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;
+        }
+
+        .number-container {
+            position: relative;
+            width: 200px;
+            border-right: 3px solid black;
+        }
+    
+        .number { 
+            width: 100%;
+            height:100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #d9d9d9;
+            cursor: pointer;
+            padding: 10px 0; 
+            box-sizing: border-box; 
+            position:relative;
+        }
+    
+        .fill-number {
+            flex-grow: 1;
+            width:180px;
+            border: none;
+            position:relative;
+            top:-28px;
+            left:0px;
+            padding: 10px;
+            font-size: 25px;
+            background-color: #d9d9d9;
+        }
+    
+        .price{
+            width:180px;
+            height:20px;
+            position:relative;
+            left:0;
+            top:30px;
+        }
+    
+        .price p{
+            font-family:Regular;
+            font-size:15px;
+            font-weight:900;
+            position:absolute;
+            bottom:-10px;
+            left:-170px;
+        }
+    
+        #price-conversion{
+            font-family:Regular;
+            font-size:12px;
+            font-weight:700;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .logo-section span {
+                font-size: 3vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 3vw;
+            }
+
+            .sender {
+                font-size: 4vw;
+            }
+
+            .fill-number, .fill-address {
+                font-size: 3vw;
+            }
+
+            .currency {
+                font-size: 3vw;
+            }
+
+            .dropdown-content div {
+                font-size: 3vw;
+            }
+
+            .blank {
+                width: 30%;
+                font-size: 3vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo-section span {
+                font-size: 4vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 4vw;
+            }
+
+            .sender {
+                font-size: 5vw;
+            }
+
+            .fill-number, .fill-address {
+                font-size: 4vw;
+            }
+
+            .currency {
+                font-size: 4vw;
+            }
+
+            .dropdown-content div {
+                font-size: 4vw;
+            }
+
+            .blank {
+                width: 40%;
+                font-size: 4vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-section">
+            <img src="image/combined_logo.png" alt="CoinHelp Logo">
+            <span>CoinHelp</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Foundation</a>
+            <a href="#">Publish</a>
+            <a href="#" style="font-weight:700">LogIn</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <span class="sender">Sender:</span>
+        <div class="flex-container">  
+            <div class="number-container">
+                <div class="number">
+                    <input type="text" class="fill-number" placeholder="Amount" maxlength="10">
+                    <div class="price">
+                      <p>$59204</p>
+                      <p id="price-conversion" style="position:absolute;left:-80px;">BTC -> USDT</p>  
+                    </div>
+                </div>
+            </div>
+            <input type="text" class="fill-address" placeholder="Adress"minlength="26" maxlength="62">
+            <div class="currency-container">
+                <div class="currency" onclick="toggleDropdown(event)">BTC</div>
+                <div class="dropdown-content" id="dropdown">
+                    <div onclick="selectCurrency('BTC')">BTC</div>
+                    <div onclick="selectCurrency('ETH')">ETH</div>
+                    <div onclick="selectCurrency('BNB')">BNB</div>
+                    <div onclick="selectCurrency('USDT')">USDT</div>
+                    <div onclick="selectCurrency('SOL')">SOL</div>
+                    <div onclick="selectCurrency('LTC')">LTC</div>
+                    <div onclick="selectCurrency('DOGE')">DOGE</div>
+                    <div onclick="selectCurrency('SHIB')">SHIB</div>
+                    <div onclick="selectCurrency('BTS')">BTS</div>
+                    <div onclick="selectCurrency('XRO')">XRO</div>
+                    <div onclick="selectCurrency('DOT')">DOT</div>
+                </div>
+            </div>
+        </div>   
+        <button class="blank">send</button>
+    </div>
+
+    <script>
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            var dropdown = document.getElementById("dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        function selectCurrency(currency) {
+            document.querySelector('.currency').textContent = currency;
+            document.getElementById("price-conversion").textContent = currency + " -> USDT";
+            document.getElementById("dropdown").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.currency') && !event.target.closest('.currency-container')) {
+                var dropdown = document.getElementById("dropdown");
+                if (dropdown.style.display === "block") {
+                    dropdown.style.display = "none";
+                }
+            }
+        }
+        function updateNavbar() {
+            const username = localStorage.getItem('registeredUsername');
+            if (username) {
+                document.getElementById('login-link').textContent = username;
+            }
+        }
+
+        window.onload = updateNavbar;
+    </script>
+
+ 
+</body>
+</html>
+</body>
+</html>
