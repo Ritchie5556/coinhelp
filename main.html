@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagonal Line Form Example</title>
+    <style>
+        /* 样式保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 150px;
+            padding: 0 20px;
+            border-bottom: 1px solid #000;
+            background-color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar .logo-section {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            flex-basis: 20%;
+        }
+
+        .navbar .logo-section img {
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .navbar .logo-section span {
+            font-size: 2vw;
+            white-space: nowrap;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            justify-content: space-around;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .navbar .nav-links a {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Inter, sans-serif;
+            font-size: 4vw;
+            font-weight: 100;
+            text-decoration: none;
+            color: black;
+            border-left: 1px solid #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .main {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 150px);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .sender, .receiver {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .sender img, .receiver img {
+            width: 167px;
+            height: 167px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            padding: 10px;
+            margin-right: 60px;
+            border: 1px solid black;
+        }
+
+        .sender p, .receiver p {
+            font-size: 6vw;
+            font-weight: 100;
+        }
+
+        .sender {
+            top: 50%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+        }
+
+        .receiver {
+            bottom: 48%;
+            right: 21%;
+            transform: translate(50%, 50%);
+        }
+
+        @keyframes disappearBorder {
+            from {
+                border-color: black;
+            }
+            to {
+                border-color: transparent;
+            }
+        }
+
+        .fade-out-border {
+            animation: disappearBorder 3s linear forwards;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-section">
+            <img src="image/combined_logo.png" alt="CoinHelp Logo">
+            <span>CoinHelp</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" id="foundation-link">Foundation</a>
+            <a href="#" id="publish-link">Publish</a>
+            <a href="#" style="font-weight:700">LogIn</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <canvas id="diagonalLineCanvas"></canvas>
+        
+        <div class="sender">
+            <img src="image/Sender.png" alt="Sender Icon">
+            <p>Sender</p>
+        </div>
+        <div class="receiver">
+            <p>Receiver</p>
+            <img src="image/Receiver.png" alt="Receiver Icon" style="margin-left:45px">
+        </div>
+    </div>
+
+    <script>
+        function drawDiagonalLine() {
+            const canvas = document.getElementById('diagonalLineCanvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight - 150;
+                const width = canvas.width;
+                const height = canvas.height;
+
+                ctx.clearRect(0, 0, width, height);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(width, height);
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            } else {
+                console.log('找不到画布元素');
+            }
+        }
+
+        window.onload = drawDiagonalLine;
+        window.onresize = drawDiagonalLine;
+
+        // 模拟用户注册状态
+        function isUserRegistered() {
+            return localStorage.getItem('isRegistered') === 'true';
+        }
+
+        // 提示用户注册的函数
+        function promptUserToRegister() {
+            alert('You are not registered yet. Please register to proceed.');
+        }
+
+        // 导航链接点击事件监听器
+        document.getElementById('foundation-link').addEventListener('click', function(event) {
+            if (!isUserRegistered()) {
+                event.preventDefault();  // 阻止默认的链接跳转行为
+                promptUserToRegister();
+            }
+        });
+
+        document.getElementById('publish-link').addEventListener('click', function(event) {
+            if (!isUserRegistered()) {
+                event.preventDefault();  // 阻止默认的链接跳转行为
+                promptUserToRegister();
+            }
+        });
+
+        // 假设用户在其他地方注册后调用该函数设置注册状态
+        function registerUser() {
+            localStorage.setItem('isRegistered', 'true');
+        }
+
+        // Fade out border animation
+        function startBorderFadeOut(element, callback) {
+            element.classList.add('fade-out-border');
+            setTimeout(callback, 3000);
+        }
+
+        document.querySelector('.sender p').addEventListener('click', function() {
+            startBorderFadeOut(document.querySelector('.sender img'), function() {
+                window.location.href = 'register2.html';
+            });
+        });
+
+        document.querySelector('.receiver p').addEventListener('click', function() {
+            startBorderFadeOut(document.querySelector('.receiver img'), function() {
+                window.location.href = 'register1.html';
+            });
+        });
+    </script>
+</body>
+</html>

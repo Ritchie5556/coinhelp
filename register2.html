@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register_Receiver</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 150px;
+            padding: 0 20px;
+            border-bottom: 1px solid #000;
+            background-color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar .logo-section {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            flex-basis: 20%;
+        }
+
+        .navbar .logo-section img {
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .navbar .logo-section span {
+            font-size: 2vw;
+            white-space: nowrap;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            justify-content: space-around;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .navbar .nav-links a {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: inter;
+            font-size: 4vw;
+            font-weight: 100;
+            text-decoration: none;
+            color: black;
+            border-left: 1px solid #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .logo-section {
+                flex-basis: 30%;
+            }
+
+            .navbar .logo-section span {
+                font-size: 1.5vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 2.5vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo-section {
+                flex-basis: 40%;
+            }
+
+            .navbar .logo-section span {
+                font-size: 2.5vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 3vw;
+            }
+        }
+
+        .main {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 150px);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .form-container {
+            position: relative; 
+            top: 50%;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: 350px;
+            z-index: 3;
+        }
+        
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 20px 0;
+            position: absolute;
+            top: -245px;
+        }
+        
+        .form input {
+            margin: 10px 0;
+            width: 340px; 
+            height: 80px;
+            box-sizing: border-box;
+            text-align: left; 
+            font-size: 32px;
+        }
+
+        .form input::placeholder {
+            color: black; 
+            font-family: Regular;
+            font-size: 30px; 
+            font-weight: 700; 
+            border: none;
+        }  
+
+        input {
+            border: none;
+            outline: none;
+        }
+
+        input:hover {
+            border-color: #007BFF;
+        }
+        
+        input:focus {
+            border-color: #007BFF; 
+            outline: none; 
+        }
+        .form .underline {
+            height: 2px;
+            background-color: black;
+            margin-bottom: 10px; 
+        }
+
+        #username{
+            position: absolute;
+            left: -100px;
+        }
+
+        #password{
+            position: absolute;
+            top: 110px;
+            left:135px;
+        }
+
+        #repassword{
+            position: absolute;
+            top: 220px;
+            left:400px;
+        }
+
+        .underline-1 {
+            width:75vw;
+            position: absolute;
+            top: 100px;
+            left: -135px;
+
+        }
+        
+        .underline-2 {
+            width: 54vw; 
+            position: absolute;
+            top: 210px;
+            left: 140px;
+        }
+        
+        .underline-3 {
+            width: 36.5vw;
+            position: absolute;
+            top: 320px;
+            left: 420px;
+        }
+
+        .confirm {
+            position: absolute;
+            left: 10%; 
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: inter;
+            font-size: 4vw;
+            font-weight: 100;
+            cursor: pointer;
+            z-index: 3;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .confirm-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(0 150px, 1087px 150px, 100% calc(100% - 150px), 0 100%);
+            z-index: 2;
+        }
+
+        #diagonalLineCanvas:hover {
+            clip-path: polygon(0 150px, 1087px 150px, 100% calc(100% - 150px), 0 100%);
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-section">
+            <img src="image/combined_logo.png" alt="CoinHelp Logo">
+            <span>CoinHelp</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Foundation</a>
+            <a href="#">Publish</a>
+            <a href="#">LogIn</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <canvas id="diagonalLineCanvas"></canvas>
+        <div class="confirm-area">
+            <span class="confirm" onclick="validateForm()">confirm</span>
+        </div>
+        <div class="form-container">
+            <div class="form">
+                <input type="text" id="username" placeholder="UserName:">
+                <div class="underline underline-1"></div>
+                <input type="password" id="password" placeholder="Password:" minlength="8" maxlength="26">
+                <div class="underline underline-2"></div>
+                <input type="re-password" id="repassword" placeholder="Re-Password:" minlength="8" maxlength="26">
+                <div class="underline underline-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const repassword = document.getElementById('repassword').value;
+    
+            if (!username || !password || !repassword) {
+                alert("Content cannot be empty.");
+            } else if (password !== repassword) {
+                alert("Passwords do not match.");
+            } else {
+                console.log("发送的负载:", payload);
+                //register API
+                fetch('http://bk2pv635919.vicp.fun/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        account:username,
+                        password: password
+                   });
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("API 调用成功");
+                        alert("表单提交成功！");
+                        localStorage.setItem('registeredUsername', username);
+                        window.location.href = 'houtai.html';
+                    } else {
+                        console.log("API 调用失败");
+                        alert("注册时发生错误。");
+                    }
+                })
+                .catch(error => {
+                    console.error("错误:", error);
+                    alert("连接服务器时发生错误。");
+                });
+            }
+        }
+</script>
+<script>    
+        window.onload = function() {
+            const canvas = document.getElementById('diagonalLineCanvas');
+            const confirmText = document.getElementById('confirmText');
+
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width = window.innerWidth;
+                const height = canvas.height = window.innerHeight - 150;
+
+                ctx.clearRect(0, 0, width, height);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(width, height);
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            } else {
+                console.log('Canvas element not found');
+            }
+        }
+    </script>
+</body>
+</html>

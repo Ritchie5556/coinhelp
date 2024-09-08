@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动态波浪页面</title>
+    <title>donate</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         html, body {
             height: 100%;
             width: 100%;
             overflow: hidden; 
         }
-
+        
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -32,6 +32,7 @@
         input::placeholder {
             color: black;
         }
+        
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -42,32 +43,32 @@
             border-bottom: 1px solid #000;
             background-color: white;
         }
-
+        
         .navbar .logo-section {
             display: flex;
             align-items: center;
             flex-shrink: 0;
             flex-basis: 20%;
         }
-
+        
         .navbar .logo-section img {
             height: 40px;
             margin-top: -50px;
             margin-right: 8px;
         }
-
+        
         .navbar .logo-section span {
             font-size: 2vw;
             white-space: nowrap;
         }
-
+        
         .navbar .nav-links {
             display: flex;
             justify-content: space-around;
             flex-grow: 1;
             height: 100%;
         }
-
+        
         .navbar .nav-links a {
             flex: 1;
             display: flex;
@@ -81,7 +82,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
+        
         .funds-raised {
             position: relative;
             top: 100px;
@@ -90,11 +91,11 @@
             color: black;
             text-align: center;
         }
-
+        
         .main {
             width: 100%;
             background: white;
-            position:relative;
+            position: relative;
         }
         
         .flex-container {
@@ -107,7 +108,7 @@
             margin-top: 181px;
             margin-left: 362px;
         } 
-
+        
         .sender {
             font-family: Arial, sans-serif;
             font-size: 48px;
@@ -115,25 +116,25 @@
             margin-top: 205px;
             margin-left: 133px;
         }
-
+        
         .fill-address {
-            width:100%;
+            width: 100%;
             flex-grow: 1;
             border: none;
             padding: 10px;
             font-size: 45px;
             background-color: #d9d9d9;
         }
-
+        
         .currency-container {
             position: relative;
             width: 200px;
             border-left: 3px solid black;
         }
-
+        
         .currency { 
             width: 100%;
-            height:100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -144,7 +145,7 @@
             padding: 10px 0; 
             box-sizing: border-box; 
         }
-
+        
         .dropdown-content {
             display: none;
             position: absolute;
@@ -175,7 +176,6 @@
             background-color: #f1f1f1;
         }
         
-
         .blank {
             display: flex;
             width: 168px;
@@ -193,16 +193,16 @@
             justify-content: center; 
             text-align: center;
         }
-
+        
         .number-container {
             position: relative;
             width: 200px;
             border-right: 3px solid black;
         }
-    
+        
         .number { 
             width: 100%;
-            height:100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -210,103 +210,65 @@
             cursor: pointer;
             padding: 10px 0; 
             box-sizing: border-box; 
-            position:relative;
+            position: relative;
         }
-    
+        
         .fill-number {
             flex-grow: 1;
-            width:180px;
+            width: 180px;
             border: none;
-            position:relative;
-            top:-28px;
-            left:0px;
+            position: relative;
+            top: -28px;
+            left: 0px;
             padding: 10px;
             font-size: 25px;
             background-color: #d9d9d9;
         }
-    
-        .price{
-            width:180px;
-            height:20px;
-            position:relative;
-            left:0;
-            top:30px;
+        
+        .price {
+            width: 180px;
+            height: 20px;
+            position: relative;
+            left: 0;
+            top: 30px;
         }
-    
-        .price p{
-            font-family:Regular;
-            font-size:15px;
-            font-weight:900;
-            position:absolute;
-            bottom:-10px;
-            left:-170px;
+        
+        .price p {
+            font-family: Regular;
+            font-size: 15px;
+            font-weight: 900;
+            position: absolute;
+            bottom: -10px;
+            left: -170px;
         }
-    
-        #price-conversion{
-            font-family:Regular;
-            font-size:12px;
-            font-weight:700;
+        
+        #price-conversion {
+            font-family: Regular;
+            font-size: 9px;
+            font-weight: 700;
+            position: absolute;
+            left: -60px;
         }
 
+        .show {
+            display: block;
+        }
+        
         @media (max-width: 768px) {
             .navbar .logo-section span {
                 font-size: 3vw;
             }
-
+        
             .navbar .nav-links a {
                 font-size: 3vw;
             }
-
+        
             .sender {
                 font-size: 4vw;
             }
-
-            .fill-number, .fill-address {
-                font-size: 3vw;
-            }
-
-            .currency {
-                font-size: 3vw;
-            }
-
-            .dropdown-content div {
-                font-size: 3vw;
-            }
-
-            .blank {
-                width: 30%;
-                font-size: 3vw;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar .logo-section span {
-                font-size: 4vw;
-            }
-
-            .navbar .nav-links a {
-                font-size: 4vw;
-            }
-
-            .sender {
-                font-size: 5vw;
-            }
-
-            .fill-number, .fill-address {
-                font-size: 4vw;
-            }
-
-            .currency {
-                font-size: 4vw;
-            }
-
-            .dropdown-content div {
-                font-size: 4vw;
-            }
-
-            .blank {
-                width: 40%;
-                font-size: 4vw;
+        
+            .main {
+                padding: 20px;
             }
         }
     </style>
@@ -320,7 +282,7 @@
         <div class="nav-links">
             <a href="#">Foundation</a>
             <a href="#">Publish</a>
-            <a href="#" style="font-weight:700">LogIn</a>
+            <a href="#" id="login-link">LogIn</a>
         </div>
     </div>
 
@@ -329,67 +291,242 @@
         <div class="flex-container">  
             <div class="number-container">
                 <div class="number">
-                    <input type="text" class="fill-number" placeholder="Amount" maxlength="10">
+                    <input type="number" class="fill-number" id="fill-number" oninput="fetchPrice()" placeholder="Amount" maxlength="10">
                     <div class="price">
-                      <p>$59204</p>
-                      <p id="price-conversion" style="position:absolute;left:-80px;">BTC -> USDT</p>  
+                      <p id="price-value">$59204</p>
+                      <p id="price-conversion">ETH -> USD</p>  
                     </div>
                 </div>
             </div>
-            <input type="text" class="fill-address" placeholder="Adress"minlength="26" maxlength="62">
+            <input type="text" class="fill-address" id="fill-address" placeholder="Address" minlength="26" maxlength="62">
             <div class="currency-container">
-                <div class="currency" onclick="toggleDropdown(event)">BTC</div>
+                <div class="currency" onclick="toggleDropdown(event)">ETH</div>
                 <div class="dropdown-content" id="dropdown">
-                    <div onclick="selectCurrency('BTC')">BTC</div>
-                    <div onclick="selectCurrency('ETH')">ETH</div>
-                    <div onclick="selectCurrency('BNB')">BNB</div>
-                    <div onclick="selectCurrency('USDT')">USDT</div>
-                    <div onclick="selectCurrency('SOL')">SOL</div>
-                    <div onclick="selectCurrency('LTC')">LTC</div>
-                    <div onclick="selectCurrency('DOGE')">DOGE</div>
-                    <div onclick="selectCurrency('SHIB')">SHIB</div>
-                    <div onclick="selectCurrency('BTS')">BTS</div>
-                    <div onclick="selectCurrency('XRO')">XRO</div>
-                    <div onclick="selectCurrency('DOT')">DOT</div>
+                    <div onclick="selectCurrency('ethereum')">ETH</div>
+                    <div onclick="selectCurrency('binancecoin')">BNB</div>
+                    <div onclick="selectCurrency('tether')">USDT</div>
+                    <div onclick="selectCurrency('usd-coin')">USDC</div>
+                    <div onclick="selectCurrency('solana')">SOL</div>
+                    <div onclick="selectCurrency('binance-usd')">BUSD</div>
+                    <div onclick="selectCurrency('dogecoin')">DOGE</div>
+                    <div onclick="selectCurrency('shiba-inu')">SHIB</div>
+                    <div onclick="selectCurrency('bitshares')">BTS</div>
+                    <div onclick="selectCurrency('polkadot')">DOT</div>
+                    <div onclick="selectCurrency('uniswap')">UNI</div>
                 </div>
             </div>
-        </div>   
-        <button class="blank">send</button>
+        </div>
+        <button class="blank" onclick="sendTransaction()">Send</button>
     </div>
 
     <script>
+        const currencyMap = {
+            'ETH': 'ethereum',
+            'BNB': 'binancecoin',
+            'USDT': 'tether',
+            'USDC': 'usd-coin',
+            'BUSD': 'binance-usd',
+            'DOGE': 'dogecoin',
+            'SHIB': 'shiba-inu',
+            'BTS': 'bitshares',
+            'DOT': 'polkadot',
+            'DAI':'dai',
+            'LINK':'chainlink'
+        };
+        let selectedCurrency = 'ethereum'; // Default currency
+
         function toggleDropdown(event) {
             event.stopPropagation();
-            var dropdown = document.getElementById("dropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            const dropdown = document.getElementById('dropdown');
+            dropdown.classList.toggle('show');
+            document.addEventListener('click', () => dropdown.classList.remove('show'), { once: true });
         }
 
-        function selectCurrency(currency) {
-            document.querySelector('.currency').textContent = currency;
-            document.getElementById("price-conversion").textContent = currency + " -> USDT";
-            document.getElementById("dropdown").style.display = "none";
+        function selectCurrency(apiName) {
+            const symbol = Object.keys(currencyMap).find(key => currencyMap[key] === apiName);
+            selectedCurrency = apiName;
+            document.querySelector('.currency').textContent = symbol;
+            document.getElementById('dropdown').classList.remove('show');
+            document.getElementById('price-conversion').textContent = `${symbol} -> USD`;
+            fetchPrice();
         }
 
-        window.onclick = function(event) {
-            if (!event.target.matches('.currency') && !event.target.closest('.currency-container')) {
-                var dropdown = document.getElementById("dropdown");
-                if (dropdown.style.display === "block") {
-                    dropdown.style.display = "none";
-                }
+        async function fetchPrice() {
+            const amount = document.getElementById('fill-number').value;
+            if (amount <= 0) {
+                document.getElementById('price-value').textContent = '$0.00';
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${selectedCurrency}&vs_currencies=usd`);
+                const data = await response.json();
+                const price = data[selectedCurrency].usd;
+                const totalPrice = (price * amount).toFixed(2);
+                document.getElementById('price-value').textContent = `$${totalPrice}`;
+            } catch (error) {
+                console.error('Error fetching price:', error);
+                document.getElementById('price-value').textContent = '$0.00';
             }
         }
-        function updateNavbar() {
-            const username = localStorage.getItem('registeredUsername');
-            if (username) {
-                document.getElementById('login-link').textContent = username;
-            }
-        }
-
-        window.onload = updateNavbar;
     </script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script>
+        //ABI
+        const ERC20_ABI = [
+            {
+                "constant": false,
+                "inputs": [
+                    { "name": "_to", "type": "address" },
+                    { "name": "_value", "type": "uint256" }
+                ],
+                "name": "transfer",
+                "outputs": [
+                    { "name": "", "type": "bool" }
+                ],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            }
+        ];
+        //address
+        const CONTRACT_ADDRESSES = {
+            USDT: '0x55d398326f99059ff775485246999027b3197955',
+            SHIB: '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE', 
+            BTC:'0x7130d2a12b9acbf3a32b4f5b0a4e5544a4fd9c46',
+            BUSD:'0x4fabb145d64652a948d72533023f6e7a623c7c53',
+            USDC:'0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+            DAI:'0x6B175474E89094C44Da98b954EedeAC495271d0F',
+            LINK:'0x514910771AF9Ca656af840dff83E8264EcF986CA',
 
- 
-</body>
-</html>
+        };
+        const TRANSACTION_HANDLERS = {
+            ETH: async function (web3, from, to, amount) {
+                return web3.eth.sendTransaction({
+                    from: from,
+                    to: to,
+                    value: web3.utils.toWei(amount, 'ether'),
+                });
+            },
+            BUSD: async function (web3, from, to, amount) {
+                const contract = new web3.eth.Contract(ERC20_ABI, CONTRACT_ADDRESSES.BUSD);
+                const amountInWei = web3.utils.toWei(amount, 'mwei'); // BUSD 使用的单位是 mwei
+                return contract.methods.transfer(to, amountInWei).send({ from: from });
+            },
+            USDT: async function (web3, from, to, amount) {
+                const contract = new web3.eth.Contract(ERC20_ABI, CONTRACT_ADDRESSES.USDT);
+                const amountInWei = web3.utils.toWei(amount, 'mwei'); // USDT 使用的单位是 mwei
+                return contract.methods.transfer(to, amountInWei).send({ from: from });
+            },    
+
+            USDC: async function (web3, from, to, amount) {
+                const contract = new web3.eth.Contract(ERC20_ABI, CONTRACT_ADDRESSES.USDC);
+                const amountInWei = web3.utils.toWei(amount, 'mwei'); // USDC 使用的单位是 mwei
+                return contract.methods.transfer(to, amountInWei).send({ from: from });
+            }, 
+
+            DAI: async function (web3, from, to, amount) {
+                const contract = new web3.eth.Contract(ERC20_ABI, CONTRACT_ADDRESSES.DAI);
+                const amountInWei = web3.utils.toWei(amount, 'ether'); // DAI 使用的是 ether 单位
+                return contract.methods.transfer(to, amountInWei).send({ from: from });
+            },
+
+            LINK: async function (web3, from, to, amount) {
+                const contract = new web3.eth.Contract(ERC20_ABI, CONTRACT_ADDRESSES.LINK);
+                const amountInWei = web3.utils.toWei(amount, 'ether'); // DAI 使用的是 ether 单位
+                return contract.methods.transfer(to, amountInWei).send({ from: from });
+            },
+
+            DOGE: async function () {
+                alert('DOGE transactions are not supported yet.');
+            },
+            SHIB: async function (web3, from, to, amountInWei) {
+                const contract = new web3.eth.Contract(ERC20_ABI, CONTRACT_ADDRESSES.SHIB);
+                return contract.methods.transfer(to, amountInWei).send({ from: from });
+            },
+            BTC: async function (web3, from, to, amount) {
+                const contract = new web3.eth.Contract(ERC20_ABI, CONTRACT_ADDRESSES.BTC);
+                const amountInWei = web3.utils.toWei(amount, 'ether'); // Assuming WBTC uses ether units
+                return contract.methods.transfer(to, amountInWei).send({ from: from });
+            },
+
+            BNB: async function (web3, from, to, amount) {
+                return web3.eth.sendTransaction({
+                    from: from,
+                    to: to,
+                    value: web3.utils.toWei(amount, 'ether'),
+                });
+            },
+
+        };
+    
+        async function switchToBNBNetwork() {
+            try {
+                await ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [{
+                        chainId: '0x38', // BSC chain ID
+                        chainName: 'Binance Smart Chain',
+                        nativeCurrency: {
+                            name: 'Binance Coin',
+                            symbol: 'BNB',
+                            decimals: 18
+                        },
+                        rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                        blockExplorerUrls: ['https://bscscan.com/']
+                    }]
+                });
+            } catch (error) {
+                console.error('Network switch failed:', error);
+            }
+        }
+
+        async function sendTransaction() {
+
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await ethereum.request({ method: 'eth_requestAccounts' });
+                    console.log('MetaMask is connected!');
+                    await switchToBNBNetwork(); // Switch to BNB network
+                } catch (error) {
+                    console.error('MetaMask connection failed:', error);
+                }
+            } else {
+                alert('MetaMask is not installed. Please install it to use this feature.');
+            }
+
+        // Assuming MetaMask or another Web3 provider is connected
+            const web3 = new Web3(window.ethereum);
+    
+            // Retrieve the amount and address from input fields
+            const amount = document.getElementById('fill-number').value;
+            const toAddress = document.getElementById('fill-address').value;
+            const selectedCurrency = document.querySelector('.currency').textContent;
+    
+            // Check if the inputs are valid
+            if (!amount || !toAddress) {
+                alert('Please fill in both the amount and address fields.');
+                return;
+            }
+    
+            // Get the current user's address from MetaMask
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const fromAddress = accounts[0];
+    
+            // Check if the selected currency has a transaction handler
+            if (TRANSACTION_HANDLERS[selectedCurrency]) {
+                try {
+                    await TRANSACTION_HANDLERS[selectedCurrency](web3, fromAddress, toAddress, amount);
+                    alert('Transaction sent successfully!');
+                } catch (error) {
+                    console.error('Transaction failed:', error);
+                    alert('Transaction failed. Check the console for details.');
+                }
+            } else {
+                alert('Selected currency is not supported.');
+            }
+        }
+    
+    </script>
 </body>
 </html>

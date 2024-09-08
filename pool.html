@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态波浪页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 150px;
+            padding: 0 20px;
+            border-bottom: 1px solid #000;
+            background-color: white;
+        }
+
+        .navbar .logo-section {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            flex-basis: 20%;
+        }
+
+        .navbar .logo-section img {
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .navbar .logo-section span {
+            font-size: 2vw;
+            white-space: nowrap;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            justify-content: space-around;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .navbar .nav-links a {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3vw;
+            text-decoration: none;
+            color: black;
+            border-left: 1px solid #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .funds-raised {
+            position: relative;
+            top: 100px;
+            font-size: 72px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+        }
+        
+        .wave-container {
+            width: 100%;
+            height: auto;
+            position: relative;
+            margin-top: auto;
+            overflow: hidden;
+        }
+
+        .wave, .wave-secondary {
+            width: 100%;
+            height: 100%; 
+            --c: #2196f3;
+            --w1: radial-gradient(100% 57% at top, #0000 100%, var(--c) 100.5%) no-repeat;
+            --w2: radial-gradient(100% 57% at bottom, var(--c) 100%, #0000 100.5%) no-repeat;
+            background: var(--w1), var(--w2), var(--w1), var(--w2);
+            background-position-x: -200%, -100%, 0%, 100%;
+            background-position-y: 100%;
+            background-size: 50.5% 100%;
+            animation: waveAnimation 4s infinite linear;
+            transition: transform 0.3s ease, height 0.3s ease; 
+            position: absolute; 
+            top: 0;
+        }
+
+        .wave-secondary {
+            top: 100%; 
+            animation-delay: 2s; 
+            opacity: 0.5; 
+        }
+
+        @keyframes waveAnimation {
+            0%  {background-position-x:-200%, -100%, 0%, 100%}
+            100%{background-position-x:  0%, 100%, 200%, 300%}
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(10);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .logo-section {
+                flex-basis: 30%;
+            }
+
+            .navbar .logo-section span {
+                font-size: 1.5vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 2.5vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo-section {
+                flex-basis: 40%;
+            }
+
+            .navbar .logo-section span {
+                font-size: 2.5vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 3vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-section">
+            <img src="image/combined_logo.png" alt="CoinHelp Logo">
+            <span>CoinHelp</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Foundation</a>
+            <a href="#">Publish</a>
+            <a href="#" style="font-weight:700">LogIn</a>
+        </div>
+    </div>
+
+    <div class="funds-raised" id="funds-raised">
+        Our fund pool raised $4000.21
+    </div>
+
+    <div class="wave-container" id="wave-container">
+        <div class="wave" id="wave"></div>
+        <div class="wave-secondary" id="wave-secondary"></div>
+    </div>
+
+    <script>
+        const wave = document.getElementById('wave');
+        const waveSecondary = document.getElementById('wave-secondary');
+        const waveContainer = document.getElementById('wave-container');
+        const fundsRaised = document.getElementById('funds-raised');
+
+        // 初始筹集金额设置
+        let amountRaised = 4000.21; // 修改为你希望的金额
+
+        // 根据金额更新波浪高度
+        function updateWaveHeight(amount) {
+            let newHeight = 520; // 初始波浪容器高度
+
+            if (amount >= 1000) {
+                const increment = Math.min(9, Math.floor(amount / 1000)) * 100;
+                newHeight += increment;
+            }
+
+            waveContainer.style.height = newHeight + 'px';
+            console.log(`Updated wave container height: ${waveContainer.style.height}`); // 打印设置的高度
+        }
+
+        // 设置金额并更新波浪高度
+        fundsRaised.textContent = `Our fund pool raised $${amountRaised.toFixed(2)}`;
+        updateWaveHeight(amountRaised);
+
+        // 处理鼠标移动调整波浪高度
+        document.addEventListener('mousemove', (event) => {
+            const mouseY = event.clientY;
+            const windowHeight = window.innerHeight;
+            
+            const waveHeight = 100 - (mouseY / windowHeight) * 100;
+            
+            wave.style.transform = `translateY(${waveHeight}px)`;
+            waveSecondary.style.transform = `translateY(${waveHeight}px)`;
+        });
+
+        // 处理点击事件使波浪峰上下移动
+        wave.addEventListener('click', (event) => {
+            wave.style.transform = 'translateY(-10px)';
+            waveSecondary.style.transform = 'translateY(-10px)';
+
+            setTimeout(() => {
+                wave.style.transform = 'translateY(0)';
+                waveSecondary.style.transform = 'translateY(0)';
+            }, 300);
+
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = '150px';
+            ripple.style.left = `${event.clientX - 75}px`;
+            ripple.style.top = `${event.clientY - waveContainer.offsetTop - 75}px`;
+            waveContainer.appendChild(ripple);
+
+            ripple.addEventListener('animationend', () => {
+                ripple.remove();
+            });
+        });
+
+        // 处理鼠标悬停创建波纹效果
+        wave.addEventListener('mouseenter', () => {
+            wave.style.transition = 'transform 0.15s ease';
+            wave.style.transform = 'translateY(-10px)';
+            waveSecondary.style.transition = 'transform 0.15s ease';
+            waveSecondary.style.transform = 'translateY(-10px)';
+        });
+
+        wave.addEventListener('mouseleave', () => {
+            wave.style.transform = 'translateY(0)';
+            wave.style.transition = 'transform 0.3s ease';
+            waveSecondary.style.transform = 'translateY(0)';
+            waveSecondary.style.transition = 'transform 0.3s ease';
+        });
+    </script>
+</body>
+</html>

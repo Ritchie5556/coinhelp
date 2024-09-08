@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagonal Line Form Example</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 150px; /* 固定高度 */
+            padding: 0 20px;
+            border-bottom: 1px solid #000;
+            background-color: white;
+            position: fixed; /* 固定在页面顶部 */
+            top: 0; /* 顶部位置 */
+            z-index: 1;
+        }
+
+        .navbar .logo-section {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            flex-basis: 20%;
+        }
+
+        .navbar .logo-section img {
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .navbar .logo-section span {
+            font-size: 2vw;
+            white-space: nowrap;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            justify-content: space-around;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .navbar .nav-links a {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: inter;
+            font-size: 4vw;
+            font-weight: 100;
+            text-decoration: none;
+            color: black;
+            border-left: 1px solid #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .logo-section {
+                flex-basis: 30%;
+            }
+
+            .navbar .logo-section span {
+                font-size: 1.5vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 2.5vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo-section {
+                flex-basis: 40%;
+            }
+
+            .navbar .logo-section span {
+                font-size: 2.5vw;
+            }
+
+            .navbar .nav-links a {
+                font-size: 3vw;
+            }
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .form-container {
+            position: relative; /* Changed to relative */
+            top: 50%; /* Adjust as needed */
+            left: 50%; /* Adjust as needed */
+            transform: translate(-50%, -50%); /* Center it horizontally and vertically */
+            width: 350px;
+            z-index: 1;
+        }
+        
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 20px 0;
+            position: absolute;
+            top: -245px;
+        }
+        
+        .form input {
+            margin: 10px 0;
+            width: 340px; 
+            height: 80px;
+            box-sizing: border-box;
+            text-align: left; 
+            font-size: 32px;
+        }
+
+        .form input::placeholder {
+            color: black; 
+            font-family: Regular;
+            font-size: 30px; 
+            font-weight: 700; 
+            border: none;
+        }  
+
+        input {
+            border: none;
+            outline: none;
+        }
+
+        input:hover {
+            border: none; 
+            outline: none; 
+        }
+
+        .form .underline {
+            height: 2px;
+            background-color: black;
+            margin-bottom: 10px; /* Margin below underline */
+        }
+
+        #username{
+            position: absolute;
+            left: -100px;
+        }
+
+        #password{
+            position: absolute;
+            top: 110px;
+            left:135px;
+        }
+
+        #repassword{
+            position: absolute;
+            top: 220px;
+            left:400px;
+        }
+
+        .underline-1 {
+            width:75vw;
+            position: absolute;
+            top: 100px;
+            left: -135px;
+
+        }
+        
+        .underline-2 {
+            width: 54vw; 
+            position: absolute;
+            top: 210px;
+            left: 140px;
+        }
+        
+        .underline-3 {
+            width: 36.5vw;
+            position: absolute;
+            top: 320px;
+            left: 420px;
+        }
+
+        .confirm {
+            position: absolute;
+            left: 10%; 
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: inter;
+            font-size: 4vw;
+            font-weight: 100;
+            cursor: pointer;
+            z-index: 3;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .confirm-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(0 150px, 1087px 150px, 100% calc(100% - 150px), 0 100%);
+            z-index: 2;
+        }
+
+        #diagonalLineCanvas:hover {
+            clip-path: polygon(0 150px, 1087px 150px, 100% calc(100% - 150px), 0 100%);
+            background-color: black;
+            color: white;
+        }
+    </style>
+    <style>
+        .main {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 150px); /* 减去导航栏高度 */
+            margin-top: 150px; /* 调整顶部边距 */
+            overflow: hidden;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            position:relative;
+            top:30px;
+            left:500px;
+
+        }
+        
+        .toggle-label {
+            margin: 0 10px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+            border:1px solid black;
+        }
+    
+        .slider:before {
+            content: "";
+            height: 34px;
+            width: 34px;
+            border-radius: 34px;
+            position: absolute;
+            left: 0px;
+            bottom:0px;
+            background-color: black;
+            transition: 0.4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(84px);
+        }
+        
+        .page-content {
+            display: none;
+        }
+        #page1{
+            width:1550px;
+            height:70%;
+            position:relative;
+            top:40px;
+        }
+        #page2 {
+            width: 100%;
+            height: calc(100% - 150px);
+            display: none;
+        }
+  
+  .message-list {
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+  }
+  
+
+  .message-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 25px;
+  }
+  
+
+  .message-content {
+    margin: 0;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: calc(100% - 100px); 
+  }
+  
+  .message-content span {
+    flex: 1; 
+    text-align:left;
+    margin-right:20px;
+    font-family:Regular;
+    font-size:22px;
+    font-weight:700;
+    color:black;
+  }
+
+  .to {
+    text-align:center !important;
+  }
+
+  .message-content .amount{
+    
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left:90px;
+  }
+  
+  .message-item::after {
+        content: '';
+        position: absolute;
+        left: -25px;
+        bottom: 0;
+        width: 1550px;
+        border-bottom: 2px solid black;
+  }
+
+  #page1 {
+    width: 100%;
+    height: 100%; /* 减去导航栏高度 */
+    overflow-y: auto; /* 启用垂直滚动条 */
+    position: relative;
+    top: 40px;
+    padding-right: 15px; /* 为滚动条预留空间 */
+}
+
+/* 自定义滚动条样式 */
+#page1::-webkit-scrollbar {
+    width: 8px;
+}
+
+#page1::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 滚动条背景色 */
+}
+
+#page1::-webkit-scrollbar-thumb {
+    background: #888; /* 滚动条颜色 */
+    border-radius: 10px;
+}
+
+#page1::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 滚动条悬停颜色 */
+}
+
+#page1, #page2 {
+    display: none;
+    padding: 20px;
+}
+
+#page1 {
+    display: block; /* 初始显示 page1 */
+}
+  
+</style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-section">
+            <img src="image/combined_logo.png" alt="CoinHelp Logo">
+            <span>CoinHelp</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Foundation</a>
+            <a href="#">Publish</a>
+            <a href="#">LogIn</a>
+        </div>
+    </div>
+
+    <div class="main">
+      <div id="page1">
+        <ul class="message-list" id="message-list">
+        </ul>
+     </div>
+
+    </div>
+
+    <script>
+        let page = 1; // 当前页
+        const limit = 50; // 每页加载数量
+        let isLoading = false; // 防止重复加载
+        
+        async function fetchData() {
+            if (isLoading) return;
+            isLoading = true;
+        
+            try {
+                const response = await fetch('http://bk2pv635919.vicp.fun/api/demo/eventInfo/page', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        limit: limit,
+                        model: {},
+                        order: 'desc',
+                        page: page,
+                        sort: 'id'
+                    })
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`API 请求失败: ${response.status}`);
+                }
+        
+                const result = await response.json();
+                console.log('API 返回的数据:', result);
+        
+                if (result.data && Array.isArray(result.data.list)) {
+                    appendDataToList(result.data.list);
+                    page++; // 加载下一页
+                } else {
+                    console.error('预期在 result.data.list 中得到一个数组，但得到:', result.data);
+                }
+            } catch (error) {
+                console.error('获取数据时发生错误:', error);
+            }
+        
+            isLoading = false;
+        }
+        
+        function appendDataToList(items) {
+            const list = document.getElementById('message-list');
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'message-item';
+                li.innerHTML = `
+                    <div class="message-content">
+                        <span class="sender">${item.addressFrom}</span>
+                        <span class="to">to</span>
+                        <span class="receiver">${item.addressTo}</span>
+                        <span class="amount">${item.amount}</span>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
+        
+        function checkToLoadMore() {
+            const list = document.getElementById('message-list');
+            const rect = list.getBoundingClientRect();
+        
+            // 检查页面底部是否在视口中，如果是，则加载更多数据
+            if (rect.bottom <= window.innerHeight) {
+                fetchData();
+            }
+        }
+        
+        // 初次加载数据
+        fetchData();
+        
+        // 监听滚动事件并检查是否需要加载更多数据
+        window.addEventListener('scroll', checkToLoadMore);
+        
+    </script>
+</body>
+</html>
